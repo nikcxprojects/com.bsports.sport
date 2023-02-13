@@ -3,7 +3,7 @@ using System.Collections;
 
 public class MenuItem : MonoBehaviour
 {
-    private static float smoothTime = 0.2f;
+    private static float smoothTime = 0.05f;
     private Vector2 TargetPosition;
 
     private bool IsEnable { get; set; }
@@ -33,6 +33,11 @@ public class MenuItem : MonoBehaviour
 
     private void OnDisable()
     {
+        if (transform.parent.parent.gameObject.activeSelf)
+        {
+            transform.parent.gameObject.SetActive(false);
+        }
+
         StopCoroutine(nameof(Delay));
     }
 
@@ -43,7 +48,7 @@ public class MenuItem : MonoBehaviour
             return;
         }
 
-        transform.position = Vector2.MoveTowards(transform.position, TargetPosition, 3100 * Time.deltaTime);
+        transform.position = Vector2.MoveTowards(transform.position, TargetPosition, 4000 * Time.deltaTime);
         if((Vector2)transform.position == TargetPosition)
         {
             IsDestinated = true;

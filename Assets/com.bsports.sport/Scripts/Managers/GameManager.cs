@@ -25,11 +25,23 @@ public class GameManager : MonoBehaviour
             case 1: titleText.text = "Top Clubs"; break;
             case 2: titleText.text = "Top Scores"; break;
         }
+
+        sectionRect.gameObject.SetActive(true);
+        scrollRect.verticalNormalizedPosition = 1;
+
+        Invoke(nameof(EnableRect), 1f);
     }
 
     public void OpenMenu()
     {
+        scrollRect.enabled = false;
+
         game.SetActive(false);
         menu.SetActive(true);
+    }
+
+    private void EnableRect()
+    {
+        scrollRect.enabled = true;
     }
 }
