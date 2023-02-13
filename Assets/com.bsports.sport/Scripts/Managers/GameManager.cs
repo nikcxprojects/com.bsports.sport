@@ -5,6 +5,7 @@ public class GameManager : MonoBehaviour
 {
     [SerializeField] GameObject menu;
     [SerializeField] GameObject game;
+    [SerializeField] GameObject settings;
 
     [Space(10)]
     [SerializeField] Text titleText;
@@ -36,8 +37,16 @@ public class GameManager : MonoBehaviour
     {
         scrollRect.enabled = false;
 
+        settings.SetActive(false);
         game.SetActive(false);
+
         menu.SetActive(true);
+    }
+
+    public void OpenSettings()
+    {
+        menu.SetActive(false);
+        settings.SetActive(true);
     }
 
     private void EnableRect()
