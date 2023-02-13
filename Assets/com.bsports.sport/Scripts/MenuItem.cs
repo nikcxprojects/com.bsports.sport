@@ -3,12 +3,11 @@ using System.Collections;
 
 public class MenuItem : MonoBehaviour
 {
-    private static float smoothTime = 0.1f;
-
-    private Vector2 Velocity = Vector2.zero;
+    private static float smoothTime = 0.2f;
     private Vector2 TargetPosition;
 
     private bool IsEnable { get; set; }
+    private bool IsDestinated { get; set; }
 
     IEnumerator Delay()
     {
@@ -25,9 +24,9 @@ public class MenuItem : MonoBehaviour
     private void OnEnable()
     {
         IsEnable = false;
+        IsDestinated = false;
 
-        transform.position += Vector3.down * 3000.0f;
-        Velocity = Vector2.zero;
+        transform.position += Vector3.down * 2000;
 
         StartCoroutine(nameof(Delay));
     }
@@ -39,11 +38,15 @@ public class MenuItem : MonoBehaviour
 
     private void Update()
     {
-        if(!IsEnable)
+        if(!IsEnable || IsDestinated)
         {
             return;
         }
 
-        transform.position = Vector2.SmoothDamp(transform.position, TargetPosition, ref Velocity, smoothTime);
+        transform.position = Vector2.MoveTowards(transform.position, TargetPosition, 3100 * Time.deltaTime);
+        if((Vector2)transform.position == TargetPosition)
+        {
+            IsDestinated = true;
+        }
     }
 }

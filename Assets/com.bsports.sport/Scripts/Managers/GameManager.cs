@@ -3,69 +3,33 @@ using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
-    public static bool IsPause { get; set; }
-    public static GameManager Instance { get => FindObjectOfType<GameManager>(); }
-
     [SerializeField] GameObject menu;
-    [SerializeField] GameObject best;
     [SerializeField] GameObject game;
-    [SerializeField] GameObject pause;
 
-    private int score;
     [Space(10)]
-    [SerializeField] Text scoreText;
-    [SerializeField] Text finalScoreText;
+    [SerializeField] Text titleText;
+    [SerializeField] ScrollRect scrollRect;
 
-    private GameObject LevelRef { get; set; }
+    private void Awake() => OpenMenu();
 
-    private void Awake()
+    public void OpenSection(RectTransform sectionRect)
     {
-        OpenGame(false);
-    }
+        scrollRect.content = sectionRect;
 
-    public void OpenBestScore(bool IsOpen)
-    {
-        menu.SetActive(!IsOpen);
-        best.SetActive(IsOpen);
-    }
+        menu.SetActive(false);
+        game.SetActive(true);
 
-    public void OpenGame(bool IsOpen)
-    {
-        pause.SetActive(false);
-
-        menu.SetActive(!IsOpen);
-        game.SetActive(IsOpen);
-
-        if(IsOpen)
+        switch (sectionRect.GetSiblingIndex())
         {
-            score = 0;
-            UpdateScore(0);
-
-            LevelRef = Instantiate(Resources.Load<GameObject>("level"), GameObject.Find("Environment").transform);
-        }
-        else
-        {
-            if(!LevelRef)
-            {
-                return;
-            }
-
-            Destroy(LevelRef);
-            IsPause = false;
+            case 0: titleText.text = "Upcoming Events"; break;
+            case 1: titleText.text = "Top Clubs"; break;
+            case 2: titleText.text = "Top Scores"; break;
         }
     }
 
-    public void OpenPause(bool IsOpen)
+    public void OpenMenu()
     {
-        IsPause = IsOpen;
-
-        game.SetActive(!IsOpen);
-        pause.SetActive(IsOpen);
-    }
-
-    public void UpdateScore(int amount)
-    {
-        score += amount;
-        scoreText.text = finalScoreText.text = $"{score}";
+        game.SetActive(false);
+        menu.SetActive(true);
     }
 }
