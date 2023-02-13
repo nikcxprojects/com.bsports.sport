@@ -11,7 +11,17 @@ public class GameManager : MonoBehaviour
     [SerializeField] Text titleText;
     [SerializeField] ScrollRect scrollRect;
 
-    private void Awake() => OpenMenu();
+    private int themeId;
+    [Space(10)]
+    [SerializeField] Image themeImg;
+    [SerializeField] Image background;
+    [SerializeField] Theme[] themes;
+
+    private void Awake()
+    {
+        SetTheme(0);
+        OpenMenu();
+    }
 
     public void OpenSection(RectTransform sectionRect)
     {
@@ -52,5 +62,21 @@ public class GameManager : MonoBehaviour
     private void EnableRect()
     {
         scrollRect.enabled = true;
+    }
+
+    public void SetTheme(int dir)
+    {
+        themeId += dir;
+        if(themeId > themes.Length - 1)
+        {
+            themeId = 0;
+        }
+        else if(themeId < 0)
+        {
+            themeId = themes.Length - 1;
+        }
+
+        background.color = themes[themeId].color;
+        themeImg.sprite = themes[themeId].sprite;
     }
 }
